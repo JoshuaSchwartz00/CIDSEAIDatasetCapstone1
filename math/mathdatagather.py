@@ -75,8 +75,6 @@ for i, data_ob in enumerate(data):
     last_segment = re.split("(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", data_ob["cleaned_question"])[-1]
     question_ind = data_ob["question"].find(last_segment)
 
-    print(last_segment)
-    print(question_ind)
     new_data["P"] = data_ob["question"][:question_ind]
     new_data["Q"] = data_ob["question"][question_ind:]
     new_data["A"] = data_ob["options"]
