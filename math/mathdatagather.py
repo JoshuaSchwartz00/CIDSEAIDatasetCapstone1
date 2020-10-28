@@ -2,7 +2,7 @@
 
 import json
 import spacy
-from spacy.symbols import NOUN
+from spacy.symbols import NOUN, NUM
 from spacy.matcher import Matcher
 import re
 from google_images_search import GoogleImagesSearch
@@ -58,8 +58,10 @@ for i, data_ob in enumerate(data):
 
     for n, noun in enumerate(nouns):
 
+        #replace nouns in question with numbers
         data_ob["question"] = data_ob["question"].replace(noun, '[{:02d}]'.format(n), 1)
 
+        #searches google and saves enumerated images to an enumerated folder
         # search_params = {
         #     'q': noun,
         #     'num': 1,
@@ -77,6 +79,7 @@ for i, data_ob in enumerate(data):
 
     print(last_segment)
     print(question_ind)
+    #creating a dictionary for each problem and appending it to data_formatted
     new_data["P"] = data_ob["question"][:question_ind]
     new_data["Q"] = data_ob["question"][question_ind:]
     new_data["A"] = data_ob["options"]
@@ -97,7 +100,7 @@ with open('train.save.json', 'w') as f:
 
 
 #replace nouns in questions with numbers
-#
+
 
 #create a mock dataset of 10 items; refinement and scalability aren't important right now
 #that is, make the dataset the same format as the VLQA stuff
