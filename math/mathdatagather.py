@@ -47,8 +47,6 @@ pattern = re.compile('^..+')
 for i, data_ob in enumerate(data):
     real_question = re.split("(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", data_ob["cleaned_question"])[-1]
     raw_passage = data_ob["question"].replace(real_question, "").strip()
-    print(real_question)
-    print(raw_passage)
 
     q_doc = nlp(raw_passage)
     nouns = []

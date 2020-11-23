@@ -1,0 +1,26 @@
+[{
+    "passage": "temp",
+    "question": "A grocery sells a bag of [NOUN] for $[NUM_KEY], and makes [NUM_1]% profit. If it sells [NUM_2] bags of [NOUN], how much total profit does it make?",
+    "nouns": [
+        "rice",
+        "ice",
+        "flour",
+        "potato"
+    ],
+    "options_num": 5,
+    "formula": "[NUM_2]*[NUM_KEY]*[NUM_1]/100",
+    "nums_bounds": {
+        "[NUM_KEY]": {
+            "lower": 7,
+            "upper": 50
+        },
+        "[NUM_1]": {
+            "lower": 10,
+            "upper": 100
+        },
+        "[NUM_2]": {
+            "lower": 20,
+            "upper": 500
+        }
+    }
+}]
