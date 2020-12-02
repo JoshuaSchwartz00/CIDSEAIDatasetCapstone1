@@ -1,12 +1,22 @@
-## User's Guide
+# User's Guide
 
-# Recipe Task
-
-
-
-# Math Task
+## Recipe Task
 
 
 
-# Pattern Task
+## Math Task
+
+### mathdatagather.py
+
+
+
+### mathcreatedata.py
+
+
+
+### templates.json
+
+
+
+## Pattern Task
 
