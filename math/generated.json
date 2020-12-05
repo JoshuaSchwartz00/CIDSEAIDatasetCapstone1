@@ -1,6 +1,6 @@
 [
     {
-        "L": "temp",
+        "L": "0",
         "Q": "A grocery sells a bag of rice for $23, and makes 73% profit. If it sells 455 bags of rice, how much total profit does it make?",
         "C": [
             7612.45,
@@ -12,7 +12,7 @@
         "A": 7639.45
     },
     {
-        "L": "temp",
+        "L": "1",
         "Q": "A grocery sells a bag of ice for $25, and makes 81% profit. If it sells 61 bags of ice, how much total profit does it make?",
         "C": [
             1266.25,
@@ -24,7 +24,7 @@
         "A": 1235.25
     },
     {
-        "L": "temp",
+        "L": "2",
         "Q": "A grocery sells a bag of flour for $17, and makes 53% profit. If it sells 318 bags of flour, how much total profit does it make?",
         "C": [
             2766.18,
@@ -36,7 +36,7 @@
         "A": 2865.18
     },
     {
-        "L": "temp",
+        "L": "3",
         "Q": "A grocery sells a bag of potato for $41, and makes 13% profit. If it sells 424 bags of potato, how much total profit does it make?",
         "C": [
             2266.92,
