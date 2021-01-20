@@ -1,0 +1,11 @@
+[
+    {
+        "questions": "A grocery sells a bag of [Noun:0] for $[Number:0:+], and makes [Percent:0:+]% profit. If it sells [Number:1:+] bags of [Noun:0], how much total profit does it make?",
+        "solve": "[Number:0]*[Number:1]*[Percent:0]/100",
+        "noun": [
+            "ice",
+            "rice",
+            "soil"
+        ]
+    }
+]

@@ -1,0 +1,1 @@
+A grocery sells a bag of [Noun] for $[Number:+], and makes [Percent:+]% profit. If it sells [Number:+] bags of ice, how much total profit does it make?

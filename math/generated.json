@@ -1,0 +1,50 @@
+[
+    {
+        "L": "0",
+        "Q": "A grocery sells a bag of rice for $23, and makes 73% profit. If it sells 455 bags of rice, how much total profit does it make?",
+        "C": [
+            7612.45,
+            7673.45,
+            7623.45,
+            7637.45,
+            7639.45
+        ],
+        "A": 7639.45
+    },
+    {
+        "L": "1",
+        "Q": "A grocery sells a bag of ice for $25, and makes 81% profit. If it sells 61 bags of ice, how much total profit does it make?",
+        "C": [
+            1266.25,
+            1185.25,
+            1295.25,
+            1228.25,
+            1235.25
+        ],
+        "A": 1235.25
+    },
+    {
+        "L": "2",
+        "Q": "A grocery sells a bag of flour for $17, and makes 53% profit. If it sells 318 bags of flour, how much total profit does it make?",
+        "C": [
+            2766.18,
+            2905.18,
+            2865.18,
+            2782.18,
+            2935.18
+        ],
+        "A": 2865.18
+    },
+    {
+        "L": "3",
+        "Q": "A grocery sells a bag of potato for $41, and makes 13% profit. If it sells 424 bags of potato, how much total profit does it make?",
+        "C": [
+            2266.92,
+            2226.92,
+            2300.92,
+            2253.92,
+            2259.92
+        ],
+        "A": 2259.92
+    }
+]
