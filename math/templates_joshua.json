@@ -32,7 +32,7 @@
       "nums_bounds":{"[NUM_KEY]":[100000, 500000], "[NUM_2]":[5000, 60000], "[NUM_3]":[5000, 39999]}
   },
   {
-      "question": "Of the [NUM_KEY] [NOUN] of Company X, 30 percent have been with the company for at least ten years. If y of these long-term members were to retire and no other employee changes were to occur, what value of y would reduce the percent of long-term employees in the company to 20 percent ?",
+      "question": "Of the [NUM_KEY] [NOUN] of Company X, 30 percent have been with the company for at least ten years. If y of these long-term members were to retire and no other changes were to occur, what value of y would reduce the percent of long-term [NOUN] in the company to 20 percent ?",
       "nouns": [
           "employees",
           "workers",
@@ -178,7 +178,7 @@
       "nums_bounds":{"[NUM_KEY]":[10, 50], "[NUM_2]":[10, 50]}
   },
   {
-      "question": "In 1995 a certain store had 1,800 [NOUN] in stock that had been purchased for $[NUM_2] each. If 1,000 of these [NOUN] were sold in 1995 for $[NUM_3] each and the remaining 800 were sold in 1996 for $[NUM_KEY] each, how many greater was the gross profit on the tools sold in 1996 than the gross profit on those sold in 1995?",
+      "question": "In 1995 a certain store had 1,800 [NOUN] in stock that had been purchased for $[NUM_2] each. If 1,000 of these [NOUN] were sold in 1995 for $[NUM_3] each and the remaining 800 were sold in 1996 for $[NUM_KEY] each, how many greater was the gross profit on the [NOUN] sold in 1996 than the gross profit on those sold in 1995?",
       "nouns": [
           "tools",
           "rulers",
@@ -241,7 +241,11 @@
           "ship",
           "cargo ship",
           "yacht",
-          "boat"
+          "boat",
+          "limousine",
+          "bus",
+          "car",
+          "motor bike"
       ],
       "options_num":5,
       "formula": "2/25*([NUM_KEY]+[NUM_2])",
