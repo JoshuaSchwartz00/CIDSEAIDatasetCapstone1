@@ -241,7 +241,11 @@
           "ship",
           "cargo ship",
           "yacht",
-          "boat"
+          "boat",
+          "limousine",
+          "bus",
+          "car",
+          "motor bike"
       ],
       "options_num":5,
       "formula": "2/25*([NUM_KEY]+[NUM_2])",
