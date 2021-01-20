@@ -2,7 +2,8 @@
   {
       "question": "KODAK [NOUN] offers an interest of [NUM_KEY]% per annum compounded annually on all its deposits. If $10,000 is deposited, what will be the ratio of the interest earned in the 4th year to the interest earned in the 5th year?",
       "nouns": [
-          "bank"
+          "bank",
+          "loan shark"
       ],
       "options_num":5,
       "formula": "100:100+[NUM_KEY]",
@@ -19,7 +20,13 @@
           "toaster",
           "microwave",
           "oven",
-          "dish washer"
+          "dish washer",
+          "car",
+          "computer",
+          "smartphone",
+          "chair",
+          "house",
+          "carpet"
       ],
       "options_num":5,
       "formula": "(([NUM_KEY]/([NUM_2]+[NUM_3]))-1)*100",
@@ -29,19 +36,33 @@
       "question": "Of the [NUM_KEY] [NOUN] of Company X, 30 percent have been with the company for at least ten years. If y of these long-term members were to retire and no other employee changes were to occur, what value of y would reduce the percent of long-term employees in the company to 20 percent ?",
       "nouns": [
           "employees",
-          "workers"
+          "workers",
+          "advisors"
       ],
       "options_num":5,
       "formula": "1/8*[NUM_KEY]",
       "nums_bounds":{"[NUM_KEY]":[200, 120000]}
   },
   {
-      "question": "A rectangular-shaped [NOUN] that measures [NUM_2] feet by [NUM_3] feet is priced at $[NUM_KEY]. What is the cost of the carpet, in dollars per square yard? (9 square feet = 1 square yard)",
+      "question": "A rectangular-shaped [NOUN] that measures [NUM_2] feet by [NUM_3] feet is priced at $[NUM_KEY]. What is the cost of the [NOUN] in dollars per square yard? (9 square feet = 1 square yard)",
       "nouns": [
           "carpet",
           "sheet",
           "drapery",
-          "cloth"
+          "cloth",
+          "table",
+          "box",
+          "fence",
+          "mirror",
+          "glass",
+          "door",
+          "countertop",
+          "brick",
+          "foam board",
+          "cardboard",
+          "mousepad",
+          "picture frame",
+          "wood plank"
       ],
       "options_num":5,
       "formula": "(9*[NUM_KEY])/([NUM_2]*[NUM_3])",
@@ -50,20 +71,36 @@
   {
       "question": "A man in a train notices that he can count [NUM_KEY] [NOUN] in one minute. If they are known to be [NUM_2] metres apart, then at what speed is the train travelling?",
       "nouns": [
-          "telephone poles"
+          "telephone poles",
+          "fence posts",
+          "cars",
+          "buildings",
+          "trees",
+          "utility poles",
+          "windmills",
+          "bridges"
       ],
       "options_num":5,
       "formula": "(([NUM_KEY]-1)*[NUM_2])/1000*60",
       "nums_bounds":{"[NUM_KEY]":[40, 200], "[NUM_2]":[10, 100]}
   },
   {
-      "question": "An investor deposited $[NUM_2] to open a new savings account that earned [NUM_KEY] percent annual interest, compounded quarterly. If there were no other transactions in the account, what was the amount of money in the account 6 months after the account was opened?",
+      "question": "An [NOUN] deposited $[NUM_2] to open a new savings account that earned [NUM_KEY] percent annual interest, compounded quarterly. If there were no other transactions in the account, what was the amount of money in the account 6 months after the account was opened?",
       "nouns": [
           "investor",
-          "savings",
-          "account",
-          "percent",
-          "interest"
+          "student",
+          "worker",
+          "adult",
+          "salaryman",
+          "ceo",
+          "business owner",
+          "cashier",
+          "accountant",
+          "engineer",
+          "scientist",
+          "professor",
+          "police officer",
+          "doctor"
       ],
       "options_num":5,
       "formula": "[NUM_2]*(1+([NUM_KEY]/100)/4)**(2)",
@@ -81,7 +118,15 @@
   {
       "question": "[NOUN] glows for every 15 seconds . How many max. times did it glow between 1:57:58 and 3:20:47 am.",
       "nouns": [
-          "light"
+          "light",
+          "lamp",
+          "bracelet",
+          "clock",
+          "screen",
+          "balloon",
+          "smartphone",
+          "bottle",
+          "toy"
       ],
       "options_num":5,
       "formula": "4969//[NUM_KEY]",
@@ -94,7 +139,14 @@
           "employee",
           "professor",
           "supervisor",
-          "teacher"
+          "teacher",
+          "examinee",
+          "worker",
+          "doctor",
+          "engineer",
+          "lawyer",
+          "police officer",
+          "citizen"
       ],
       "options_num":5,
       "formula": "(([NUM_KEY]+[NUM_2])*100)/33",
@@ -108,7 +160,19 @@
           "runner",
           "jogger",
           "sprinter",
-          "athlete"
+          "athlete",
+          "student",
+          "employee",
+          "professor",
+          "supervisor",
+          "teacher",
+          "examinee",
+          "worker",
+          "doctor",
+          "engineer",
+          "lawyer",
+          "police officer",
+          "citizen"
       ],
       "options_num":5,
       "formula": "2/(1/[NUM_2]+1/[NUM_KEY])",
@@ -141,7 +205,17 @@
           "person",
           "worker",
           "employee",
-          "student"
+          "student",
+          "professor",
+          "supervisor",
+          "teacher",
+          "examinee",
+          "worker",
+          "doctor",
+          "engineer",
+          "lawyer",
+          "police officer",
+          "citizen"
       ],
       "options": [
           "A)$1,000",
