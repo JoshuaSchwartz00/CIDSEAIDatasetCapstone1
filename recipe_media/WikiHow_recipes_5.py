@@ -2,14 +2,25 @@
 import urllib.request
 import json
 import random
+import os
+from os.path import dirname, abspath
 from selenium import webdriver
+
+############################################################################
+#HOW TO RUN:
+#Copy this file to the folder you want the json & image files to all be in.
+#Run the copied file.
+############################################################################
 
 PATH = "/home/autumn/Downloads/chromedriver" # need to change this for your own path
 
 driver1 = webdriver.Chrome(PATH)
 driver2 = webdriver.Chrome(PATH)
 
-
+#source directory for this python file, to be used later
+#explanation here: https://stackoverflow.com/questions/30218802/get-parent-of-current-directory-from-python-script/30218825
+#parentdir = dirname((abspath(__file__)))
+#folderdir = parentdir + "/recipe_data"
 # function that grabs the image xpath for an image on a page with a particular id
 def get_image_xpath(step_id): 
     return "//div[@id='" + step_id + "']/ol/li/div[@class='mwimg  largeimage  floatcenter ']/a/div[@class='content-spacer']/img"
