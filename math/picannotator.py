@@ -21,7 +21,7 @@ for pic in files:
 
         #set up message
         message = "some number" # FIX TO BE NUM_KEY
-        font = ImageFont.truetype("arial.ttf", size = width//30+50)
+        font = ImageFont.truetype(os.getcwd() + "/Roboto-Regular.ttf", size = width//30+50)
         w, h = draw.textsize(message, font=font)
         (x, y) = ((width-w)//2, (height-h)//10)
         color = "rgb(255, 0, 255)"  # I HOPE HOT PINK STANDS OUT ENOUGH
