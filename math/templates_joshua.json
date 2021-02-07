@@ -1,16 +1,8 @@
 [
+
   {
-      "question": "KODAK [NOUN] offers an interest of [NUM_KEY]% per annum compounded annually on all its deposits. If $10,000 is deposited, what will be the ratio of the interest earned in the 4th year to the interest earned in the 5th year?",
-      "nouns": [
-          "bank",
-          "loan shark"
-      ],
-      "options_num":5,
-      "formula": "100:100+[NUM_KEY]",
-      "nums_bounds":{"[NUM_KEY]":[1, 100]}
-  },
-  {
-      "question": "Virat buys an old [NOUN] for Rs. [NUM_2] and spends Rs. [NUM_3] on its repairs. If he sells the [NOUN] for Rs. [NUM_KEY], his gain percent is:",
+      "passage": "Virat buys an old [NOUN] for Rs. [NUM_2] and spends Rs. [NUM_3] on its repairs.",
+      "question": "If he sells the [NOUN] for Rs. [NUM_KEY], his gain percent is:",
       "nouns": [
           "car",
           "scooter",
@@ -32,7 +24,8 @@
       "nums_bounds":{"[NUM_KEY]":[100000, 500000], "[NUM_2]":[5000, 60000], "[NUM_3]":[5000, 39999]}
   },
   {
-      "question": "Of the [NUM_KEY] [NOUN] of Company X, 30 percent have been with the company for at least ten years. If y of these long-term members were to retire and no other changes were to occur, what value of y would reduce the percent of long-term [NOUN] in the company to 20 percent ?",
+      "passage": "Of the [NUM_KEY] [NOUN] of Company X, 30 percent have been with the company for at least ten years.",
+      "question": "If y of these long-term members were to retire and no other changes were to occur, what value of y would reduce the percent of long-term [NOUN] in the company to 20 percent ?",
       "nouns": [
           "employees",
           "workers",
@@ -43,7 +36,8 @@
       "nums_bounds":{"[NUM_KEY]":[200, 120000]}
   },
   {
-      "question": "A rectangular-shaped [NOUN] that measures [NUM_2] feet by [NUM_3] feet is priced at $[NUM_KEY]. What is the cost of the [NOUN] in dollars per square yard? (9 square feet = 1 square yard)",
+      "passage": "A rectangular-shaped [NOUN] that measures [NUM_2] feet by [NUM_3] feet is priced at $[NUM_KEY].",
+      "question": "What is the cost of the [NOUN] in dollars per square yard? (9 square feet = 1 square yard)",
       "nouns": [
           "carpet",
           "sheet",
@@ -68,7 +62,8 @@
       "nums_bounds":{"[NUM_KEY]":[50, 5000], "[NUM_2]":[1, 50], "[NUM_3]":[1, 50]}
   },
   {
-      "question": "A man in a train notices that he can count [NUM_KEY] [NOUN] in one minute. If they are known to be [NUM_2] metres apart, then at what speed is the train travelling?",
+      "passage": "A man in a train notices that he can count [NUM_KEY] [NOUN] in one minute.",
+      "question": "If they are known to be [NUM_2] metres apart, then at what speed is the train travelling?",
       "nouns": [
           "telephone poles",
           "fence posts",
@@ -84,7 +79,8 @@
       "nums_bounds":{"[NUM_KEY]":[40, 200], "[NUM_2]":[10, 100]}
   },
   {
-      "question": "An [NOUN] deposited $[NUM_2] to open a new savings account that earned [NUM_KEY] percent annual interest, compounded quarterly. If there were no other transactions in the account, what was the amount of money in the account 6 months after the account was opened?",
+      "passage": "An [NOUN] deposited $[NUM_2] to open a new savings account that earned [NUM_KEY] percent annual interest, compounded quarterly.",
+      "question": "If there were no other transactions in the account, what was the amount of money in the account 6 months after the account was opened?",
       "nouns": [
           "investor",
           "student",
@@ -106,7 +102,8 @@
       "nums_bounds":{"[NUM_KEY]":[1, 99], "[NUM_2]":[1000, 100000]}
   },
   {
-      "question": "In a [NOUN] there are 50 cards numbered from 1 to 13. There are [NUM_2] cards of each number in the deck. If you insert [NUM_KEY] more cards with the number 10 on them and you shuffle the deck really good, what is the probability to pull out a card with a number 10 on it?",
+      "passage": "In a [NOUN] there are 50 cards numbered from 1 to 13. There are [NUM_2] cards of each number in the deck.",
+      "question": "If you insert [NUM_KEY] more cards with the number 10 on them and you shuffle the deck really good, what is the probability to pull out a card with a number 10 on it?",
       "nouns": [
           "deck of cards"
       ],
@@ -115,7 +112,8 @@
       "nums_bounds":{"[NUM_KEY]":[1, 50], "[NUM_2]":[4, 12]}
   },
   {
-      "question": "[NOUN] glows for every 15 seconds . How many max. times did it glow between 1:57:58 and 3:20:47 am.",
+      "passage": "[NOUN] glows for every 15 seconds.",
+      "question": "How many max. times did it glow between 1:57:58 and 3:20:47 am.",
       "nouns": [
           "light",
           "lamp",
@@ -132,7 +130,8 @@
       "nums_bounds":{"[NUM_KEY]":[2, 60]}
   },
   {
-      "question": "A [NOUN] has to obtain 33% of the total marks to pass. He got [NUM_2] marks and failed by [NUM_KEY] marks. The maximum marks are?",
+      "passage": "A [NOUN] has to obtain 33% of the total marks to pass.",
+      "question": "He got [NUM_2] marks and failed by [NUM_KEY] marks. The maximum marks are?",
       "nouns": [
           "student",
           "employee",
@@ -152,7 +151,8 @@
       "nums_bounds":{"[NUM_KEY]":[30, 300], "[NUM_2]":[30, 300]}
   },
   {
-      "question": "A [NOUN] goes from A to B at a speed of [NUM_2] kmph and comes back to A at a speed of [NUM_KEY] kmph. Find his average speed for the entire journey?",
+      "passage": "A [NOUN] goes from A to B at a speed of [NUM_2] kmph and comes back to A at a speed of [NUM_KEY] kmph.",
+      "question": "Find his average speed for the entire journey?",
       "nouns": [
           "man",
           "woman",
@@ -178,7 +178,8 @@
       "nums_bounds":{"[NUM_KEY]":[10, 50], "[NUM_2]":[10, 50]}
   },
   {
-      "question": "In 1995 a certain store had 1,800 [NOUN] in stock that had been purchased for $[NUM_2] each. If 1,000 of these [NOUN] were sold in 1995 for $[NUM_3] each and the remaining 800 were sold in 1996 for $[NUM_KEY] each, how many greater was the gross profit on the [NOUN] sold in 1996 than the gross profit on those sold in 1995?",
+      "passage": "In 1995 a certain store had 1,800 [NOUN] in stock that had been purchased for $[NUM_2] each.",
+      "question": "If 1,000 of these [NOUN] were sold in 1995 for $[NUM_3] each and the remaining 800 were sold in 1996 for $[NUM_KEY] each, how many greater was the gross profit on the [NOUN] sold in 1996 than the gross profit on those sold in 1995?",
       "nouns": [
           "tools",
           "rulers",
@@ -198,7 +199,8 @@
       "nums_bounds":{"[NUM_KEY]":[56, 100], "[NUM_2]":[10, 31], "[NUM_3]":[31, 56]}
   },
   {
-      "question": "[NUM_KEY]% of the employees in a multinational corporation have [NOUN], 75 percent have microwave ovens, 80 percent have ACs and 85 percent have washing machines. At least what percentage of employees has all four gadgets?",
+      "passage": "[NUM_KEY]% of the employees in a multinational corporation have [NOUN], 75 percent have microwave ovens, 80 percent have ACs and 85 percent have washing machines.",
+      "question": "At least what percentage of employees has all four gadgets?",
       "nouns": [
           "CD players",
           "toasters",
@@ -216,7 +218,8 @@
       "nums_bounds":{"[NUM_KEY]":[1, 69]}
   },
   {
-      "question": "A [NOUN] covered a distance of 250 km, partly at an average speed of 40 kmph and partly at 60 kmph. If the total time taken is [NUM_KEY] hours, then the distance covered at 40 kmph is",
+      "passage": "A [NOUN] covered a distance of 250 km, partly at an average speed of 40 kmph and partly at 60 kmph.",
+      "question": "If the total time taken is [NUM_KEY] hours, then the distance covered at 40 kmph is",
       "nouns": [
           "bus",
           "car",
@@ -235,7 +238,8 @@
       "nums_bounds":{"[NUM_KEY]":[4, 60]}
   },
   {
-      "question": "A [NOUN] [NUM_KEY] m long is running at a speed of 45 km/hr. In how many seconds will it pass a bridge [NUM_2] m long?",
+      "passage": "A [NOUN] [NUM_KEY] m long is running at a speed of 45 km/hr.",
+      "question": "In how many seconds will it pass a bridge [NUM_2] m long?",
       "nouns": [
           "train",
           "ship",
