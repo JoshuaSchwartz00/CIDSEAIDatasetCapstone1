@@ -25,6 +25,18 @@ with data scraped from WikiHow recipes.
     i.e. "python3 WikiHow_recipes_6.py"
 - Wait for the script to finish. This may take 15-20 minutes.
 
+Naming:
+The script names the json and images like so: "category0recipe0method0.json" and "category0recipe0method0image0.webp".
+Category means the type or genre of the recipe, and WikiHow has a recipe catalogue page for each category:
+    0 - Recipes (in general), https://www.wikihow.com/Category:Recipes
+    1 - Desserts and Sweets, https://www.wikihow.com/Category:Desserts-and-Sweets
+    2 - Meat, https://www.wikihow.com/Category:Meat
+    3 - Baking, https://www.wikihow.com/Category:Baking
+    4 - Fish and Seafood, https://www.wikihow.com/Category:Fish-and-Seafood
+    5 - Pasta and Noodles, https://www.wikihow.com/Category:Pasta-and-Noodles 
+Recipe refers to the Nth recipe in a category. Method refers to the Nth sub-method within a recipe
+since some recipes list multiple methods for how to do them. Image refers to the Nth image for that recipe method.
+
 
 
 To see how many json files there are, you can run this (in Windows Powershell):
