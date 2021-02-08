@@ -23,6 +23,7 @@ with data scraped from WikiHow recipes.
 - Create a folder where you want the generated files to be stored.
 - Copy the python script to that folder and run it through the command line,
     i.e. "python3 WikiHow_recipes_6.py"
+- Wait for the script to finish. This may take 15-20 minutes.
 
 
 
