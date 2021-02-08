@@ -7,7 +7,8 @@ Sponsor Name: Shailaja Sampat, PhD.
 
 Script file name = WikiHow_recipes_6.py
 
-Prerequisites:
+
+##Prerequisites:
 -You need to install and setup on your PC:
     - Python 3
     - Google Chrome browser
@@ -15,7 +16,7 @@ Prerequisites:
     - Selenium library for Python from https://selenium-python.readthedocs.io/installation.html
         - Do "pip install selenium"
 
-Instructions: 
+##Instructions: 
 The above script will generate about 750 json files plus images 
 with data scraped from WikiHow recipes.
 - On line 6/7 of the script there is a PATH variable. You need to update
@@ -25,7 +26,7 @@ with data scraped from WikiHow recipes.
     i.e. "python3 WikiHow_recipes_6.py"
 - Wait for the script to finish. This may take 15-20 minutes.
 
-Naming:
+##Naming:
 The script names the json and images like so: "category0recipe0method0.json" and "category0recipe0method0image0.webp".
 Category means the type or genre of the recipe, and WikiHow has a recipe catalogue page for each category:
     0 - Recipes (in general), https://www.wikihow.com/Category:Recipes
