@@ -3,9 +3,10 @@ import json
 import random
 from selenium import webdriver
 
-PATH = "/home/autumn/Downloads/chromedriver" # need to change this for your own path
+#PATH = "/home/autumn/Downloads/chromedriver" # need to change this for your own path
+PATH = "C:\chromedriver.exe" #for windows 
 
-urls = ["https://www.wikihow.com/Category:Recipes", "https://www.wikihow.com/Category:Desserts-and-Sweets", "https://www.wikihow.com/Category:Meat", "https://www.wikihow.com/Category:Baking"]
+urls = ["https://www.wikihow.com/Category:Recipes", "https://www.wikihow.com/Category:Desserts-and-Sweets", "https://www.wikihow.com/Category:Meat", "https://www.wikihow.com/Category:Baking", "https://www.wikihow.com/Category:Fish-and-Seafood", "https://www.wikihow.com/Category:Pasta-and-Noodles"]
 
 driver1 = webdriver.Chrome(PATH)
 driver2 = webdriver.Chrome(PATH)
@@ -66,109 +67,123 @@ def get_images_links(image_links, len_links):
 
 def main():
     
-    url = "https://www.wikihow.com/Category:Recipes"
-    driver1.get(url)
+    for l in range(len(urls)):
 
-    links = driver1.find_elements_by_xpath("//div[@class='responsive_thumb  ']/a") # links is a list of all recipe article links from the wikiHow 
+        url = urls[l]
+        driver1.get(url)
 
-    num_links= len(links)
-    method_title = ""
-    recipes = {}
-    count = 0
+        links = driver1.find_elements_by_xpath("//div[@class='responsive_thumb  ']/a") # links is a list of all recipe article links from the wikiHow 
 
-    #this for loop can be adjusted to create a number of json files containing recipe (pass in num_links)
-    for i in range(0, 3): 
-        driver2.get(links[i].get_attribute("href"))
+        num_links= len(links)
+        method_title = ""
+        recipes = {}
+        count = 0
 
-        recipe_dict = { "title": None, #dictionary used to store attributes of the recipe
-        "methods": [],
-        "images": None, 
-        "steps": []
+        #this for loop can be adjusted to create a number of json files containing recipe (pass in num_links)
+        for i in range(0, num_links): 
+            driver2.get(links[i].get_attribute("href"))
 
-        }
+            recipe_dict = { "title": None, #dictionary used to store attributes of the recipe
+            "methods": [],
+            "images": None, 
+            "steps": []
 
-        json_dict = {"Question" : None, # json dictionary to store all attributes of the json file for a recipe method
-                    "Step1" : None, 
-                    "Step2" : None,
-                    "Step3": None, 
-                     "Step4": None,
-                    "Answer": None,
-                    "Answer Choices": []}
+            }
 
-        methods = driver2.find_elements_by_xpath("//div[@class='method_toc_item  toc_method ']") #method list that contains all methods for a recipe
-        num_methods = len(methods)
+            json_dict = {"Question" : None, # json dictionary to store all attributes of the json file for a recipe method
+                        "Step1" : None, 
+                        "Step2" : None,
+                        "Step3": None, 
+                        "Step4": None,
+                        "Answer": None,
+                        "image_hyperlinks": ["",""],
+                        "text": [],
+                        "Answer Choices": []}
 
-        # this for loop creates the json file for each method of a recipe
-        for j in range(0, num_methods): 
-            images = []
-            answer = [None, None, None, None]
-            title = driver2.title #got title
-            new_title = title + " " + methods[j].text
-            new_title = new_title.replace("\n", " ")
-            recipe_dict["title"] = new_title
-            json_dict["Question"] = "Choose the correct order of images/steps (i) through (iv) for " + new_title
+            methods = driver2.find_elements_by_xpath("//div[@class='method_toc_item  toc_method ']") #method list that contains all methods for a recipe
+            num_methods = len(methods)
 
-            step_id = "steps_" + str(j + 1)
-            method_title = methods[j].text
+            # this for loop creates the json file for each method of a recipe
+            for j in range(0, num_methods): 
+                images = []
+                answer = [None, None, None, None]
+                title = driver2.title #got title
+                new_title = title + " " + methods[j].text
+                new_title = new_title.replace("\n", " ")
+                recipe_dict["title"] = new_title
+                json_dict["Question"] = "Choose the correct order of images/steps (i) through (iv) for " + new_title
 
-            image_links = driver2.find_elements_by_xpath("//div[@id='"+ step_id + "']/ol/li/div[@class='mwimg  largeimage  floatcenter ']/a/div[@class='content-spacer']/img") # this grabs all images for a particular recipe method and stores them in images
-            recipe_step = driver2.find_elements_by_xpath("//div[@id='"+ step_id + "']/ol/li/div[@class='step']/b[@class='whb']") # this grabs all textual steps for a particular recipe method and stores them in recipe_step
+                step_id = "steps_" + str(j + 1)
+                method_title = methods[j].text
+
+                image_links = driver2.find_elements_by_xpath("//div[@id='"+ step_id + "']/ol/li/div[@class='mwimg  largeimage  floatcenter ']/a/div[@class='content-spacer']/img") # this grabs all images for a particular recipe method and stores them in images
+                recipe_step = driver2.find_elements_by_xpath("//div[@id='"+ step_id + "']/ol/li/div[@class='step']/b[@class='whb']") # this grabs all textual steps for a particular recipe method and stores them in recipe_step
+                    
+                recipe_steps = get_recipe_steps(recipe_step, len(recipe_step))
+
+
+                if len(recipe_steps) < 4 or len(image_links) < 4: continue # checks that there are a sufficient number of method steps and images grabbed from the website
+
+                num_list = [0, 1, 2, 3]
+
+                random.shuffle(num_list) #generate a list with random order of numbers 0-3
+
+                json_dict["Step1"] = "(i) " + recipe_steps[num_list[0]]  #set step 1 of json dictionary to random recipe method textual step      
+                json_dict["Step2"] = "(iii) " + recipe_steps[num_list[1]] #set step 2 of json dictionary to random recipe method textual step
+                json_dict["text"].append(recipe_steps[num_list[0]])
+                json_dict["text"].append(recipe_steps[num_list[1]])
+                json_dict["text"].append("")
+                json_dict["text"].append("")
+
+                answer[num_list[0]] = "(i)"
+                answer[num_list[1]] = "(iii)"
+                answer[num_list[2]] = "(ii)"
+                answer[num_list[3]] = "(iv)"
+
+                json_dict["Answer"] = answer #get answer to the question
                 
-            recipe_steps = get_recipe_steps(recipe_step, len(recipe_step))
+                images = get_images_links(image_links, len(image_links))
+
+                
+                urllib.request.urlretrieve(images[num_list[2]], "category" + str(l) + "recipe" + str(i) + "method" + str(j) + "image0.webp") #download randomly selected image from list of images
+                urllib.request.urlretrieve(images[num_list[3]], "category" + str(l) + "recipe" + str(i) + "method" + str(j) + "image1.webp") #download randomly selected image from list of images
+
+                json_dict["Step3"] = "(ii) " + images[num_list[2]] # set step 3 of json dictionary to randomly selected image from the images list      
+                json_dict["Step4"] = "(iv) " + images[num_list[3]] # set step 4 of json dictionary to randomly selected image from the images list
+                json_dict["image_hyperlinks"].append(images[num_list[2]])
+                json_dict["image_hyperlinks"].append(images[num_list[3]])
+
+                # this generates the list of different answer choices that will be displayed in the json file
+                while len(json_dict["Answer Choices"]) < 3:
+                    ans_list = answer_choice(answer)
+                    if ans_list not in json_dict["Answer Choices"]:
+                        json_dict["Answer Choices"].append(ans_list)
+
+                json_dict["Answer Choices"].append(answer)
+                random.shuffle(json_dict["Answer Choices"])
 
 
-            if len(recipe_steps) < 4 or len(image_links) < 4: continue # checks that there are a sufficient number of method steps and images grabbed from the website
+                recipe_dict["methods"].append(method_title)
+                recipe_dict["images"] = images
+                recipe_dict["steps"].append(recipe_steps)
+                recipes["recipe" + str(count)+ "(" + str(j) + ")"] = recipe_dict
+                count = count + 1
 
-            num_list = [0, 1, 2, 3]
+                # Serializing json  
+                jsonfile = json.dumps(json_dict, indent = 3) 
 
-            random.shuffle(num_list) #generate a list with random order of numbers 0-3
-
-            json_dict["Step1"] = "(i) " + recipe_steps[num_list[0]]  #set step 1 of json dictionary to random recipe method textual step      
-            json_dict["Step2"] = "(iii) " + recipe_steps[num_list[1]] #set step 2 of json dictionary to random recipe method textual step
-
-            answer[num_list[0]] = "(i)"
-            answer[num_list[1]] = "(iii)"
-            answer[num_list[2]] = "(ii)"
-            answer[num_list[3]] = "(iv)"
-
-            json_dict["Answer"] = answer #get answer to the question
-            
-            images = get_images_links(image_links, len(image_links))
-
-            
-            urllib.request.urlretrieve(images[num_list[2]], "recipe" + str(i) + "method" + str(j) + "image0.webp") #download randomly selected image from list of images
-            urllib.request.urlretrieve(images[num_list[3]], "recipe" + str(i) + "method" + str(j) + "image1.webp") #download randomly selected image from list of images
-
-            json_dict["Step3"] = "(ii) " + images[num_list[2]] # set step 3 of json dictionary to randomly selected image from the images list      
-            json_dict["Step4"] = "(iv) " + images[num_list[3]] # set step 4 of json dictionary to randomly selected image from the images list
-            
-            # this generates the list of different answer choices that will be displayed in the json file
-            while len(json_dict["Answer Choices"]) < 3:
-                ans_list = answer_choice(answer)
-                if ans_list not in json_dict["Answer Choices"]:
-                    json_dict["Answer Choices"].append(ans_list)
-
-            json_dict["Answer Choices"].append(answer)
-            random.shuffle(json_dict["Answer Choices"])
-
-
-            recipe_dict["methods"].append(method_title)
-            recipe_dict["images"] = images
-            recipe_dict["steps"].append(recipe_steps)
-            recipes["recipe" + str(count)+ "(" + str(j) + ")"] = recipe_dict
-            count = count + 1
-
-            # Serializing json  
-            jsonfile = json.dumps(json_dict, indent = 3) 
-
-            # Writing to sample.json 
-            with open("recipe" + str(i) + "method" + str(j) + ".json", "w") as outfile: 
-                outfile.write(jsonfile)
-            json_dict["Answer Choices"].clear()
-
+                # Writing to sample.json 
+                with open("category"+ str(l) + "recipe" + str(i) + "method" + str(j) + ".json", "w") as outfile: 
+                    outfile.write(jsonfile)
+                json_dict["Answer Choices"].clear()
+                json_dict["image_hyperlinks"].clear()
+                json_dict["image_hyperlinks"] = ["",""]
+                json_dict["text"].clear()
     driver2.close()
     driver1.close()
 
+
+        
     
 if __name__ == "__main__":
     main()
