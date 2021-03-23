@@ -1,7 +1,14 @@
 from imagegather import gather_image
 from mathcreatedata import generate_questions
+import os
+import json
+import sys
 
 if __name__ == "__main__":
+    testMode = False
+    if(len(sys.argv) > 2):
+        if(sys.argv[2] == 1):
+            testMode = True
     gather_image("templates_joshua.json")
     if not os.path.exists('output'):
         os.makedirs('output')
@@ -16,7 +23,7 @@ if __name__ == "__main__":
     print(len(templates))
     output_questions = []
     for template in templates:
-        questions = generate_questions(template)
+        questions = generate_questions(template, testMode)
         output_questions = output_questions + questions
     print(len(output_questions))
 
