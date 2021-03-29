@@ -11,56 +11,59 @@ def test1(template_data, generated_data) -> bool:
     isGood = True
 
     for gen in generated_data:
-        temp = {}
+        lwr = 0
+        upr = 0
         for template in template_data:
-            if(gen["question"][0:5] == template["question"][0:5]):
-                temp = template
+            if(gen["question"][0:7] == template["question"][0:7]):
+                lwr = template["nums_bounds"]["[NUM_KEY]"][0]
+                upr = template["nums_bounds"]["[NUM_KEY]"][1]
                 break
-        lwr = template["nums_bounds"][0]
-        upr = template["nums_bounds"][1]
 
-        if(gen["keys"]["[NUM_KEY]"] < lwr or gen["keys"]["[NUM_KEY]"] > upr):
+        num_key = gen["keys"]["[NUM_KEY]"]
+        if(num_key < lwr or num_key > upr):
             isGood = False
+            print(lwr, num_key, upr)
 
     return isGood
     
 
 #checks if images are generated with text on them
-def test2(template_data, generated_data) -> bool:
-    isGood = True
+def test2(generated_data) -> bool:
+    pass
+    # isGood = True
 
-    for gen in generated_data:
-        ans = gen["answers"]
+    # for gen in generated_data:
+    #     ans = gen["answers"]
 
-        image = cv2.imread(gen["image"])
-        rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        results = pytesseract.image_to_data(rgb, output_type=Output.DICT)
+    #     image = cv2.imread(gen["image"])
+    #     rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    #     results = pytesseract.image_to_data(rgb, output_type=Output.DICT)
 
-        for i in range(0, len(results["text"])):
-            x = results["left"][i]
-            y = results["top"][i]
-            w = results["width"][i]
-            h = results["height"][i]
+    #     for i in range(0, len(results["text"])):
+    #         x = results["left"][i]
+    #         y = results["top"][i]
+    #         w = results["width"][i]
+    #         h = results["height"][i]
 
-            text = results["text"][i]
-            conf = int(results["conf"][i])
+    #         text = results["text"][i]
+    #         conf = int(results["conf"][i])
 
-        if conf > args["min_conf"]:
-            text = "".join([c if ord(c) < 128 else "" for c in text]).strip()
+    #     if conf > args["min_conf"]:
+    #         text = "".join([c if ord(c) < 128 else "" for c in text]).strip()
 
-        if(text != ans):
-            isGood = False
+    #     if(text != ans):
+    #         isGood = False
 
-    return isGood
+    # return isGood
 
 #checks if the correct answer is correct according to the equation used
-def test3(template_data, generated_data) -> bool:
+def test3(generated_data) -> bool:
     isGood = True
 
     for gen in generated_data:
         formula = gen["formula"]
-        for key, val in zip(gen["keys"].keys, gen["keys"].values):
-            formula.replace(key, val)
+        for key in gen["keys"]:
+            formula = formula.replace(key, str(gen["keys"][key]))
 
         ans = eval(formula)
 
@@ -70,30 +73,31 @@ def test3(template_data, generated_data) -> bool:
     return isGood
 
 #checks that the answer choices are random
-def test4(template_data, generated_data) -> bool:
+def test4(generated_data) -> bool:
     isGood = True
 
     for gen in generated_data:
-        temp = gen["options"]
+        temp = gen["choices"]
         temp = list(set(temp))
         if(len(temp) != 5):
             isGood = False
+            print(temp)
 
     return isGood
 
 #checks that the main noun in the question matches the image in output.json
-def test5(template_data, generated_data) -> bool:
+def test5(generated_data) -> bool:
     isGood = True
 
     for gen in generated_data:
-        if(gen["noun"] + ".jpg" != gen["name"]):
+        if(gen["noun"] + ".jpg" != gen["img_name"]):
             isGood = False
 
     return isGood
 
 if __name__ == "__main__":
-    command = "python main.py 1"
-    os.system(command)
+    #command = "python main.py"
+    #os.system(command)
 
     #gets all the data
     with open("templates_joshua.json") as f:
@@ -108,29 +112,29 @@ if __name__ == "__main__":
     else:
         print("Failure occured in Test 1.")
         
-    if(test2(template_data, generated_data)):
+    if(test2(generated_data)):
         print("Test 2 passed.")
     else:
         print("Failure occured in Test 2.")
 
-    if(test3(template_data, generated_data)):
+    if(test3(generated_data)):
         print("Test 3 passed.")
     else:
         print("Failure occured in Test 3.")
         
-    if(test4(template_data, generated_data)):
+    if(test4(generated_data)):
         print("Test 4 passed.")
     else:
         print("Failure occured in Test 4.")
         
-    if(test5(template_data, generated_data)):
+    if(test5(generated_data)):
         print("Test 5 passed.")
     else:
         print("Failure occured in Test 5.")
     
     #lets the program sleep so it gives it time to finish all the functions and image saving
-    time.sleep(60)
+    #time.sleep(60)
 
     #removes all the unneeded data
-    os.remove("generated.json")
-    os.rmdir("output")
+    #os.remove("generated.json")
+    #os.rmdir("output")

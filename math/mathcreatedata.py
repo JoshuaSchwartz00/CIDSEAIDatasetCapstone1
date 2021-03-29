@@ -48,31 +48,40 @@ def generate_questions(template, testMode = False):
 
 
             list_choices = [answer]
-            for i in range(template["options_num"] - 1):
-                list_choices.append(answer + random.randint(-100,100))
+            wrong_index = 0
+            while(wrong_index < template["options_num"] - 1):
+                rand_wrong_num = random.randint(-100, 100)
+                if(answer+rand_wrong_num not in list_choices):
+                    list_choices.append(answer+rand_wrong_num)
+                    wrong_index += 1
+
+            # for i in range(template["options_num"] - 1):
+            #     rand_wrong_num = random.randint(-100,100)
+            #     if((answer + rand_wrong_num) in list_choices):
+            #         rand_wrong_num += 1
+            #     list_choices.append(answer + rand_wrong_num)
             
             random.shuffle(list_choices)
 
-            if(testMode):
-                generated_questions.append({
-                    "passage": passage_replaced,
-                    "question": question_replaced,
-                    "choices": list_choices,
-                    "answers": answer,
-                    "keys": keys,
-                    "noun": noun,
-                    "formula": formula_base,
-                    "img_name": name,
-                    "image": "/output/{:03d}".format(COUNT) + ".png"
-                })
-            else:
-                generated_questions.append({
-                    "passage": passage_replaced,
-                    "question": question_replaced,
-                    "choices": list_choices,
-                    "answers": answer,
-                    "image": "/output/{:03d}".format(COUNT) + ".png"
-                })
+            generated_questions.append({
+                "passage": passage_replaced,
+                "question": question_replaced,
+                "choices": list_choices,
+                "answers": answer,
+                "keys": keys,
+                "noun": noun,
+                "formula": formula_base,
+                "img_name": name,
+                "image": "/output/{:03d}".format(COUNT) + ".png"
+            })
+            # else:
+            #     generated_questions.append({
+            #         "passage": passage_replaced,
+            #         "question": question_replaced,
+            #         "choices": list_choices,
+            #         "answers": answer,
+            #         "image": "/output/{:03d}".format(COUNT) + ".png"
+            #     })
 
     return generated_questions
 
