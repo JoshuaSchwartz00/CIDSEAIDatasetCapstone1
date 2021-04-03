@@ -29,32 +29,8 @@ def test1(template_data, generated_data) -> bool:
 
 #checks if images are generated with text on them
 def test2(generated_data) -> bool:
-    pass
-    # isGood = True
-
-    # for gen in generated_data:
-    #     ans = gen["answers"]
-
-    #     image = cv2.imread(gen["image"])
-    #     rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    #     results = pytesseract.image_to_data(rgb, output_type=Output.DICT)
-
-    #     for i in range(0, len(results["text"])):
-    #         x = results["left"][i]
-    #         y = results["top"][i]
-    #         w = results["width"][i]
-    #         h = results["height"][i]
-
-    #         text = results["text"][i]
-    #         conf = int(results["conf"][i])
-
-    #     if conf > args["min_conf"]:
-    #         text = "".join([c if ord(c) < 128 else "" for c in text]).strip()
-
-    #     if(text != ans):
-    #         isGood = False
-
-    # return isGood
+    return True
+    #skim through all the images and see if they have numbers on them
 
 #checks if the correct answer is correct according to the equation used
 def test3(generated_data) -> bool:
@@ -96,8 +72,8 @@ def test5(generated_data) -> bool:
     return isGood
 
 if __name__ == "__main__":
-    #command = "python main.py"
-    #os.system(command)
+    command = "python main.py"
+    os.system(command)
 
     #gets all the data
     with open("templates_joshua.json") as f:
@@ -136,5 +112,5 @@ if __name__ == "__main__":
     #time.sleep(60)
 
     #removes all the unneeded data
-    #os.remove("generated.json")
-    #os.rmdir("output")
+    os.remove("generated.json")
+    os.rmdir("output")
