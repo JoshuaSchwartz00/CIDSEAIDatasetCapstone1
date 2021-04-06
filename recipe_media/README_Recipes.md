@@ -1,9 +1,9 @@
 This file describes how to run the recipes data collection script.
-Authors: Autumn Martin & Jack Summers\
-Arizona State University Senior Capstone Project
-Team Name: CIDSE Large-Scale Dataset Creation for Artificial Intelligence (AI) Research
-Team Members: Autumn Martin, Branden Roper, Joshua Schwartz, Jack Summers, Wei Chen, Ricky Hsu
-Sponsor Name: Shailaja Sampat, PhD.
+Authors: Autumn Martin & Jack Summers<br>
+Arizona State University Senior Capstone Project<br>
+Team Name: CIDSE Large-Scale Dataset Creation for Artificial Intelligence (AI) Research<br>
+Team Members: Autumn Martin, Branden Roper, Joshua Schwartz, Jack Summers, Wei Chen, Ricky Hsu<br>
+Sponsor Name: Shailaja Sampat, PhD.<br>
 
 Script file name = WikiHow_recipes_6.py
 
