@@ -1,14 +1,12 @@
 from PIL import Image, ImageDraw, ImageColor
 import random
+import string
+import os
 
 
 ########################################################################################################################
 # MATH
 # returns a random item from the given list
-def get_random_item_from(given_list):
-    return given_list[random.randrange(0, len(given_list))]
-
-
 # returns a function that, when called, returns a random element from the given list
 def get_random_generator(given_list):
     return lambda: given_list[random.randrange(0, len(given_list))]
@@ -17,7 +15,7 @@ def get_random_generator(given_list):
 # generates a list of the given size, populating it with elements returned by the given generator
 def generate_list(generator, size):
     generated_list = []
-    while size >= 0:
+    while size > 0:
         generated_list.append(generator())
         size -= 1
     return generated_list
@@ -27,7 +25,7 @@ def generate_list(generator, size):
 # if this loops forever/too long, the given generator cannot/cannot efficiently generate enough unique elements
 def generate_unique_list(generator, size):
     unique_list = []
-    while size >= 0:
+    while size > 0:
         element = generator()
         if element not in unique_list:
             unique_list.append(element)
@@ -39,9 +37,9 @@ def generate_unique_list(generator, size):
 #   (1) the element was returned by the given generator
 #   (2) the element agrees with the given condition
 # if the function loops forever/too long, the given condition is too strict for the given generator
-def generate_list_conditionally(generator, size, condition):
+def generate_list_conditionally(generator, condition, size):
     generated_list = []
-    while size >= 0:
+    while size > 0:
         new_element = generator()
         if condition(new_element):
             generated_list.append(new_element)
@@ -57,60 +55,19 @@ def unpack_and_enumerate(given_list):
     return new_list
 
 
-# converts an integer to a new base; returns a list from most significant digit to least
-# if the given integer is negative, the first element in the list will be a minus sign
-def get_new_base(integer, new_base):
-    if new_base >= 2:
-        new_base_integer = []  # start empty
-        if integer < 0:  # check sign
-            new_base_integer.append("-")
-            integer *= -1
-        insertion_point = len(new_base_integer)  # insert digits at 1 if we have a negative sign, 0 if we don't
-        while integer >= new_base:  # iterate to get all digits except for the least significant
-            new_base_integer.insert(insertion_point, integer % new_base)
-            integer //= new_base
-        new_base_integer.insert(insertion_point, integer)  # get the least significant digit
-    else:
-        new_base_integer = "Error: Bases must be >= 2, but you entered {}".format(new_base)
-    return new_base_integer
-
-
 ########################################################################################################################
 # ALPHABET
-# returns the english alphabet as a string (all caps)
-def get_english_alphabet():
-    return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-
-# converts an integer to a string based on the given alphabet
-def int_to_alpha(integer, alphabet):
-    alpha = ""
-    character_mapping = get_new_base(integer, len(alphabet))
-    for index in character_mapping:
-        alpha += alphabet[index]
-    return alpha
-
-
-# enumerates the given list using the given alphabet instead of integers
-def alphanumerate(list_arg, alphabet):
+def alphanumerate(list_arg):
     new_list = []
     for index, item in enumerate(list_arg):
-        alpha_index = int_to_alpha(index, alphabet)
-        new_list.append([alpha_index, item])
+        new_list.append([string.ascii_uppercase[index], item])
     return new_list
 
 
-########################################################################################################################
-# COLORS
 # returns the list of colors used for shape generation
 def get_colors():
     return ["black", "royalblue", "brown", "cyan", "gray", "red", "purple", "pink", "gold", "orange", "teal", "green",
             "darkcyan"]
-
-
-# returns a random color from the list of all colors
-def get_random_color():
-    return get_random_item_from(get_colors())
 
 
 # returns the name of a color for pretty printing if one exists; otherwise, returns the given color name
@@ -121,23 +78,14 @@ def get_color_for_pretty_printing(color):
         return color
 
 
-########################################################################################################################
-# SHAPES
 # returns the list of shapes used for question generation
 def get_shapes():
     return ["circle", "square", "triangle", "ellipse", "pentagon"]
 
 
-# returns a random shape from the list of all shapes
-def get_random_shape():
-    return get_random_item_from(get_shapes())
-
-
-########################################################################################################################
-# SEQUENCES
 # returns a randomly generated color-shape pair
 def generate_sequence_item():
-    return [get_random_color(), get_random_shape()]
+    return [random.choice(get_colors()), random.choice(get_shapes())]
 
 
 # returns a randomly-generated list of sequence items of the form (index, color, shape)
@@ -150,9 +98,8 @@ def generate_unique_sequence(sequence_length):
     return unpack_and_enumerate(generate_unique_list(generate_sequence_item, sequence_length))
 
 
-# generates a child sequence of the given length by randomly selecting elements from the parent sequence
-def generate_child_sequence(parent_sequence, sequence_length):
-    return generate_list(get_random_generator(parent_sequence), sequence_length)
+def generate_child_sequence(parent_sequence, length):
+    return generate_list(get_random_generator(parent_sequence), length)
 
 
 # generates a transformed sequence by mapping the enumerative indexes of the parent sequence
@@ -193,39 +140,37 @@ def get_question():
     return "Based on the given diagram, what would the new sequence be?"
 
 
-# generates a list of incorrect answer choice sequences
-def generate_incorrect_answer_sequences(output_sequence, answer_sequence, amount):
+def generate_incorrect_answer_sequences(output_sequence, correct_answer_sequence, amount=3):
     def generator():
-        return generate_child_sequence(output_sequence, len(answer_sequence))
+        return generate_child_sequence(output_sequence, len(correct_answer_sequence))
 
-    def condition(new_sequence):
-        return new_sequence != answer_sequence
-    return generate_list_conditionally(generator, amount, condition)
+    def condition(incorrect_answer_sequence):
+        return incorrect_answer_sequence != correct_answer_sequence
+
+    incorrect_answer_sequences = generate_list_conditionally(generator, condition, amount)
+    return incorrect_answer_sequences
 
 
-# generates a list of the given length containing shuffled answer strings, where only one is correct
-def generate_answer_strings(output_sequence, answer_sequence, length):
+def generate_answer_strings(output_sequence, answer_sequence):
     answer_strings = [sequence_to_string(answer_sequence)]
-    incorrect_answer_sequences = generate_incorrect_answer_sequences(output_sequence, answer_sequence, length)
+    incorrect_answer_sequences = generate_incorrect_answer_sequences(output_sequence, answer_sequence)
     for item in incorrect_answer_sequences:
         answer_strings.append(sequence_to_string(item))
     random.shuffle(answer_strings)
     return answer_strings
 
 
-# converts a pair list to bullets
 def pair_list_to_bullets(pair_list):
     bullets = ""
     for pair in pair_list:
-        bullets += "({}) {} ".format(pair[0], pair[1])
+        bullets += "({}) {} ".format(*pair)
     bullets = bullets.strip()
     return bullets
 
 
-# returns the answer choices as a string
-def get_answer_choices(output_sequence, answer_sequence, length):
-    answer_strings = generate_answer_strings(output_sequence, answer_sequence, length)
-    return pair_list_to_bullets(alphanumerate(answer_strings, get_english_alphabet()))
+def get_answer_choices(output_sequence, answer_sequence):
+    answer_strings = generate_answer_strings(output_sequence, answer_sequence)
+    return pair_list_to_bullets(alphanumerate(answer_strings))
 
 
 # returns the answer as a string
@@ -257,135 +202,251 @@ def dict_to_json(given_dict):
     return pair_list_to_json(list(given_dict.items()))
 
 
-########################################################################################################################
-# DRAW
-# draw functions take (x, y) as the upper left-hand corner
-def draw_line(draw, x, y, length, fill="black", width=5):
-    draw.line((x, y, x + length, y), fill=fill, width=width)
+class ImageHandler:
+    directory = "pattern_matching_dataset"
+    filename = "pattern{}.jpg"
+    color_mode = "RGB"
+    background_color = "white"
+    has_rotation = False
+    shape_width = 100
+    shape_height = 100
+    x_spacing = 225
+    y_spacing = 125
+    arrowhead_width = 20
+    arrowhead_height = 20
+    line_width = 5
+    default_fill = "black"
 
+    canvas_width = None
+    arrow_y_start = None
+    arrowhead_x = None
+    line_length = None
 
-def draw_arrowhead(draw, x, y, width, height, fill="black"):
-    draw.polygon([(x, y + height), (x, y), (x + width, y + height/2)], fill=fill)
+    @staticmethod
+    def orchestrate(input_list, output_list, image_index):
+        image_handler = ImageHandler(input_list, output_list, image_index)
+        image_handler.draw_all()
+        if ImageHandler.has_rotation:
+            image_handler.perform_random_rotation()
+        image_handler.save_image()
 
+    @staticmethod
+    def derive_static_variables():
+        ImageHandler.canvas_width = ImageHandler.derive_canvas_width()
+        ImageHandler.arrow_y_start = ImageHandler.derive_arrow_y_start()
+        ImageHandler.arrowhead_x = ImageHandler.derive_arrowhead_x()
+        ImageHandler.line_length = ImageHandler.derive_line_length()
 
-def draw_arrow(draw, x, y, length, arrowhead_width=20, arrowhead_height=20):
-    draw_line(draw, x, y + arrowhead_height/2, length - arrowhead_width)
-    draw_arrowhead(draw, x + length - arrowhead_width, y, arrowhead_width, arrowhead_height)
+    @staticmethod
+    def derive_canvas_width():
+        return 2 * ImageHandler.shape_width + (ImageHandler.x_spacing - ImageHandler.shape_width)
 
+    @staticmethod
+    def derive_arrow_y_start():
+        return ImageHandler.shape_height / 2 - 10
 
-def draw_arrows(draw, amount, x, y, length, y_spacing):
-    y_current = y
-    while amount > 0:
-        draw_arrow(draw, x, y_current, length)
-        y_current += y_spacing
-        amount -= 1
+    @staticmethod
+    def derive_arrowhead_x():
+        return ImageHandler.x_spacing - ImageHandler.arrowhead_width
 
+    @staticmethod
+    def derive_line_length():
+        return ImageHandler.arrowhead_x - ImageHandler.shape_width
 
-def draw_circle(draw, color, x, y, width, height):
-    draw.ellipse((x, y, x + width, y + height), fill=color)
+    def __init__(self, input_list, output_list, image_index):
+        self.input_list = input_list
+        self.output_list = output_list
+        self.image_index = image_index
+        self.canvas_height = self.derive_canvas_height()
+        self.image = self.derive_image()
+        self.draw = self.derive_draw()
 
+    def derive_canvas_height(self):
+        shape_amount = len(self.input_list)
+        return shape_amount * self.shape_height + ((shape_amount - 1) * (self.y_spacing - self.shape_height))
 
-def draw_square(draw, color, x, y, width, height):
-    draw.rectangle((x, y, x + width, y + height), fill=color)
+    def derive_image(self):
+        image_color = ImageColor.getrgb(self.background_color)
+        return Image.new(self.color_mode, (self.canvas_width, self.canvas_height), image_color)
 
+    def derive_draw(self):
+        return ImageDraw.Draw(self.image)
 
-def draw_ellipse(draw, color, x, y, width, height):
-    draw.ellipse((x + width/4, y, x + width/4 + width/2, y + height), fill=color)
-
-
-def draw_triangle(draw, color, x, y, width, height):
-    draw.polygon([(x, y + height), (x + width, y + height), (x + width/2, y)], fill=color)
-
-
-def draw_pentagon(draw, color, x, y, width, height):
-    draw.polygon([(x, y + height/2), (x + width/2, y), (x + width, y + height/2), (x + width, y + height),
-                  (x, y + height)], fill=color)
-
-
-# maps the shape name to the appropriate draw function
-def draw_shape(draw, sequence_item, x, y, width, height):
-    shape_dictionary = {"circle": draw_circle, "square": draw_square, "ellipse": draw_ellipse,
-                        "triangle": draw_triangle, "pentagon": draw_pentagon}
-    shape_color = sequence_item[1]
-    shape_name = sequence_item[2]
-    shape_dictionary[shape_name](draw, shape_color, x, y, width, height)
-
-
-def draw_shapes(draw, sequence, x, y_spacing, width, height):
-    for sequence_item in sequence:
-        draw_shape(draw, sequence_item, x, sequence_item[0] * y_spacing, width, height)
-
-
-def draw_all(draw, input_sequence, output_sequence, shape_width, shape_height, x_spacing, y_spacing, x=0, y=0):
-    draw_arrows(draw, len(input_sequence), x + shape_width, y + shape_height / 2 - 10, x_spacing - shape_width,
-                y_spacing)
-    draw_shapes(draw, input_sequence, x, y_spacing, shape_width, shape_height)
-    draw_shapes(draw, output_sequence, x + x_spacing, y_spacing, shape_width, shape_height)
-
-
-# determine canvas size, make an image, draw everything, and return the image
-def draw_image(input_sequence, output_sequence, has_rotation, shape_width=100, shape_height=100, x_spacing=225,
-               y_spacing=125):
-    shape_amount = len(input_sequence)  # determine canvas width
-    canvas_width = 2 * shape_width + (x_spacing - shape_width)
-    canvas_height = (shape_amount * shape_height) + ((shape_amount - 1) * (y_spacing - shape_height))
-
-    image = Image.new("RGB", (canvas_width, canvas_height), ImageColor.getrgb("white"))  # draw image
-    draw = ImageDraw.Draw(image)
-    draw_all(draw, input_sequence, output_sequence, shape_width, shape_height, x_spacing, y_spacing)
-
-    if has_rotation:  # rotate image if desired
+    def perform_random_rotation(self):
         degrees = random.randint(0, 359)
-        image = image.rotate(degrees, expand=True, fillcolor="white")
-    return image
+        self.image = self.image.rotate(degrees, fillcolor=self.background_color, expand=True)
+
+    def draw_all(self):
+        self.draw_arrows()
+        self.draw_shapes(self.input_list, 0)
+        self.draw_shapes(self.output_list, self.x_spacing)
+
+    def save_image(self):
+        filename = self.filename.format(self.image_index)
+        path = "{}\\{}".format(self.directory, filename)
+        self.image.save(path)
+
+    def draw_shapes(self, model_triple_list, x):
+        for model_triple in model_triple_list:
+            model_index = model_triple[0]
+            y = model_index * self.y_spacing
+            self.draw_shape(model_triple, x, y)
+
+    def draw_shape(self, model_triple, x, y):
+        shape_dictionary = {"circle": self.draw_circle, "square": self.draw_square, "ellipse": self.draw_ellipse,
+                            "triangle": self.draw_triangle, "pentagon": self.draw_pentagon}
+        fill = model_triple[1]
+        shape = model_triple[2]
+
+        #   a bug with pycharm will flag this with "unexpected arguments" despite the fact that all possible resultant
+        # functions (shown above) take the same three arguments in the same order
+
+        # noinspection PyArgumentList
+        shape_dictionary[shape](fill, x, y)
+
+    def draw_circle(self, fill, x, y):
+        x1 = x
+        y1 = y
+
+        x2 = x + self.shape_width
+        y2 = y + self.shape_height
+
+        self.draw.ellipse((x1, y1, x2, y2), fill=fill)
+
+    def draw_square(self, fill, x, y):
+        x1 = x
+        y1 = y
+
+        x2 = x + self.shape_width
+        y2 = y + self.shape_height
+
+        self.draw.rectangle((x1, y1, x2, y2), fill=fill)
+
+    def draw_ellipse(self, fill, x, y):
+        x1 = x + self.shape_width / 4
+        y1 = y
+
+        x2 = x + self.shape_width / 4 + self.shape_width / 2
+        y2 = y + self.shape_height
+
+        self.draw.ellipse((x1, y1, x2, y2), fill=fill)
+
+    def draw_triangle(self, fill, x, y):
+        x1 = x
+        y1 = y + self.shape_height
+
+        x2 = x + self.shape_width
+        y2 = y1
+
+        x3 = x + self.shape_width / 2
+        y3 = y
+
+        self.draw.polygon(((x1, y1), (x2, y2), (x3, y3)), fill=fill)
+
+    def draw_pentagon(self, fill, x, y):
+        x1 = x
+        y1 = y + self.shape_height / 2
+
+        x2 = x + self.shape_width / 2
+        y2 = y
+
+        x3 = x + self.shape_width
+        y3 = y1
+
+        x4 = x3
+        y4 = y + self.shape_height
+
+        x5 = x
+        y5 = y4
+
+        self.draw.polygon(((x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)), fill=fill)
+
+    def draw_arrows(self):
+        arrow_count = len(self.input_list)
+        y = self.arrow_y_start
+        while arrow_count > 0:
+            self.draw_arrow(y)
+            y += self.y_spacing
+            arrow_count -= 1
+
+    def draw_arrow(self, y):
+        line_y = y + self.arrowhead_height / 2
+        arrowhead_y = y
+        self.draw_line(line_y)
+        self.draw_arrowhead(arrowhead_y)
+
+    def draw_arrowhead(self, y):
+        x = self.arrowhead_x
+        width = self.arrowhead_width
+        height = self.arrowhead_height
+        fill = self.default_fill
+
+        x1 = x
+        y1 = y + height
+
+        x2 = x
+        y2 = y
+
+        x3 = x + width
+        y3 = y + height / 2
+
+        self.draw.polygon(((x1, y1), (x2, y2), (x3, y3)), fill=fill)
+
+    def draw_line(self, y):
+        x = self.shape_width
+        length = self.line_length
+        width = self.line_width
+        fill = self.default_fill
+
+        x1 = x
+        y1 = y
+
+        x2 = x + length
+        y2 = y
+
+        self.draw.line((x1, y1, x2, y2), width=width, fill=fill)
+
+
+ImageHandler.derive_static_variables()
 
 
 ########################################################################################################################
 # MAIN
-# terms:
-#   length: the number of problems to generate
-#   sequence item: a 3-tuple of the form (index, color, shape)
-#   input sequence: a list of sequence items describing objects on the left side of the image
-#   output sequence: a list of sequence items describing objects on the right side of the image
-#   text passage sequence: a list of sequence items describing objects in the text passage entry of the json file
-#   answer sequence: a list of sequence items describing objects in the answer entry of the json file; the correct
-#                    answer to the generated problem
-#   io_sequences: the input and output sequences; these must be the same length for a given problem
-#   ta_sequences: the text passage and answer sequences; these must be the same length for a given problem
-#   answer choice length: the number of answer choices to be generated for a problem
-def main(length, min_io_sequence_length=2, max_io_sequence_length=5, min_ta_sequence_length=3, max_ta_sequence_length=7,
-         min_answer_choice_length=4, max_answer_choice_length=4, has_rotation=False):
-    # one iteration produces one question; each question has an image component (jpg), and a text component (json)
-    for index in range(0, length):
-        # determine sequence lengths
-        io_sequence_length = random.randint(min_io_sequence_length, max_io_sequence_length)
-        ta_sequence_length = random.randint(min_ta_sequence_length, max_ta_sequence_length)
-        answer_choice_length = random.randint(min_answer_choice_length, max_answer_choice_length)
+def main():
+    question_count = 500
+    io_list_len_range = range(3, 6)
+    ta_list_len_range = range(3, 8)
 
-        # generate sequences
-        input_sequence = generate_unique_sequence(io_sequence_length)
-        output_sequence = generate_sequence(io_sequence_length)
-        text_passage_sequence = generate_child_sequence(input_sequence, ta_sequence_length)
-        answer_sequence = generate_transformed_sequence(text_passage_sequence, output_sequence)
+    for index in range(0, question_count):
+        io_sequence_length = random.choice(io_list_len_range)
+        ta_sequence_length = random.choice(ta_list_len_range)
 
-        # draw & save image
-        filename = "Pattern_Matching_{}".format(index)
-        image = draw_image(input_sequence, output_sequence, has_rotation)
-        image.save(filename + ".jpg")
+        input_list = generate_unique_sequence(io_sequence_length)
+        output_list = generate_sequence(io_sequence_length)
+        text_passage_list = generate_child_sequence(input_list, ta_sequence_length)
+        answer_list = generate_transformed_sequence(text_passage_list, output_list)
 
-        # write json
-        text_passage = get_text_passage(text_passage_sequence)
+        directory = "pattern_matching_dataset"
+        filename = "pattern{}".format(index)
+        path = "{}\\{}".format(directory, filename)
+        json_path = path + ".json"
+
+        if not os.path.isdir(directory):
+            os.mkdir(directory)
+
+        ImageHandler.orchestrate(input_list, output_list, index)
+
+        text_passage = get_text_passage(text_passage_list)
         question = get_question()
-        answer_choices = get_answer_choices(output_sequence, answer_sequence, answer_choice_length)
-        answer = get_answer(answer_sequence)
+        answer_choices = get_answer_choices(output_list, answer_list)
+        answer = get_answer(answer_list)
         image_link = get_image_link(filename)
         problem_info_dict = {"text_passage": text_passage, "question": question, "answer_choices": answer_choices,
                              "answer": answer, "image_link": image_link}
         json = dict_to_json(problem_info_dict)
-        with open(filename + ".json", "w") as file:
+        with open(json_path, "w") as file:
             file.write(json)
 
 
-########################################################################################################################
 if __name__ == "__main__":
-    main(500, has_rotation=True)
+    main()
